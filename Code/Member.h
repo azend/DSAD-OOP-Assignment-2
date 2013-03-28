@@ -1,6 +1,6 @@
 
-#ifndef _MEMBER_H
-#define _MEMBER_H
+#ifndef _MEMBER_H_
+#define _MEMBER_H_
 
 /**
  * 
