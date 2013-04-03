@@ -14,7 +14,7 @@
 
 #define DEFAULT_DB_PATH "db.txt" /**< The default file path for the file which stores members. */
 
-/*
+/**
  * @class DoorBot
  * @brief This class forms an object which manages the Diyode door entry system.
  *
