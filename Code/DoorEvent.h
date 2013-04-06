@@ -23,9 +23,9 @@ private:
 public:
     //constructor/destructor
     DoorEvent()
-    ~DoorEvent()
+    //~DoorEvent()
     //mutators
-    void SetAccessCode(unsigned char[] newAccessCode);
+    void SetAccessCode(unsigned char newAccessCode[]);
     void SetStatus(int newStatus);
     void SetTime(time_t newCurrentTime);
     //accessors
