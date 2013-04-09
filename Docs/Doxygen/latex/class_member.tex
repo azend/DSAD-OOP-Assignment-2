@@ -1,0 +1,159 @@
+\hypertarget{class_member}{\section{Member Class Reference}
+\label{class_member}\index{Member@{Member}}
+}
+
+
+This class models basic properties of a member at Diyode.  
+
+
+
+
+{\ttfamily \#include $<$Member.\-h$>$}
+
+
+
+Collaboration diagram for Member\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=180pt]{class_member__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_member_a44241aa6aa9b792b550d9cc29e7ad050}{\hyperlink{class_member_a44241aa6aa9b792b550d9cc29e7ad050}{Member} ()}\label{class_member_a44241aa6aa9b792b550d9cc29e7ad050}
+
+\begin{DoxyCompactList}\small\item\em Creates a member object with default properties. Objects instanciated using this method will have an i\-Button address of 00\-:00\-:00\-:00\-:00\-:00\-:00, a first name of \char`\"{}\char`\"{}, and a last name of \char`\"{}\char`\"{}. \end{DoxyCompactList}\item 
+\hypertarget{class_member_a4f5d7cb8788247f65f10b5b81be4a4ab}{\hyperlink{class_member_a4f5d7cb8788247f65f10b5b81be4a4ab}{$\sim$\-Member} ()}\label{class_member_a4f5d7cb8788247f65f10b5b81be4a4ab}
+
+\begin{DoxyCompactList}\small\item\em Destroys a member object. \end{DoxyCompactList}\item 
+unsigned const char $\ast$ \hyperlink{class_member_acbcc21c318cc1ebb2d5e7d43940d51cf}{Geti\-Button\-Addr} ()
+\begin{DoxyCompactList}\small\item\em Gets the i\-Button address of the member. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{class_member_a0c06d526ea58beed3ce782f4599e0a8b}{Get\-First\-Name} ()
+\begin{DoxyCompactList}\small\item\em Gets the first name of the member. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{class_member_aadc78fb6f531930442cc1244455fda80}{Get\-Last\-Name} ()
+\begin{DoxyCompactList}\small\item\em Gets the last name of the member. \end{DoxyCompactList}\item 
+bool \hyperlink{class_member_a196f091ea8067c5777b2b07184b0b6e1}{Seti\-Button\-Addr} (unsigned char $\ast$new\-Addr)
+\begin{DoxyCompactList}\small\item\em Set the i\-Button address of the member. \end{DoxyCompactList}\item 
+bool \hyperlink{class_member_adce4ba240d1ee7251d3dd832370d55d9}{Set\-First\-Name} (std\-::string new\-First\-Name)
+\begin{DoxyCompactList}\small\item\em Set the first name of the member. \end{DoxyCompactList}\item 
+bool \hyperlink{class_member_a8ab627d627dc4a9aa572ed94f492c328}{Set\-Last\-Name} (std\-::string new\-Last\-Name)
+\begin{DoxyCompactList}\small\item\em Set the last name of the member. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class models basic properties of a member at Diyode. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_member_a0c06d526ea58beed3ce782f4599e0a8b}{\index{Member@{Member}!Get\-First\-Name@{Get\-First\-Name}}
+\index{Get\-First\-Name@{Get\-First\-Name}!Member@{Member}}
+\subsubsection[{Get\-First\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Member\-::\-Get\-First\-Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_member_a0c06d526ea58beed3ce782f4599e0a8b}
+
+
+Gets the first name of the member. 
+
+\begin{DoxyReturn}{Returns}
+Returns the first name of the user as a string. 
+\end{DoxyReturn}
+\hypertarget{class_member_acbcc21c318cc1ebb2d5e7d43940d51cf}{\index{Member@{Member}!Geti\-Button\-Addr@{Geti\-Button\-Addr}}
+\index{Geti\-Button\-Addr@{Geti\-Button\-Addr}!Member@{Member}}
+\subsubsection[{Geti\-Button\-Addr}]{\setlength{\rightskip}{0pt plus 5cm}unsigned const char$\ast$ Member\-::\-Geti\-Button\-Addr (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_member_acbcc21c318cc1ebb2d5e7d43940d51cf}
+
+
+Gets the i\-Button address of the member. 
+
+\begin{DoxyReturn}{Returns}
+Returns the i\-Button address of the member as an array I\-B\-U\-T\-T\-O\-N\-\_\-\-B\-Y\-T\-E\-S long. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{_member_8h_ade1c978055c3c12b8f47e9a696bd27d6}{I\-B\-U\-T\-T\-O\-N\-\_\-\-B\-Y\-T\-E\-S} 
+\end{DoxySeeAlso}
+\hypertarget{class_member_aadc78fb6f531930442cc1244455fda80}{\index{Member@{Member}!Get\-Last\-Name@{Get\-Last\-Name}}
+\index{Get\-Last\-Name@{Get\-Last\-Name}!Member@{Member}}
+\subsubsection[{Get\-Last\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Member\-::\-Get\-Last\-Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_member_aadc78fb6f531930442cc1244455fda80}
+
+
+Gets the last name of the member. 
+
+\begin{DoxyReturn}{Returns}
+Returns the last name of the user as a string. 
+\end{DoxyReturn}
+\hypertarget{class_member_adce4ba240d1ee7251d3dd832370d55d9}{\index{Member@{Member}!Set\-First\-Name@{Set\-First\-Name}}
+\index{Set\-First\-Name@{Set\-First\-Name}!Member@{Member}}
+\subsubsection[{Set\-First\-Name}]{\setlength{\rightskip}{0pt plus 5cm}bool Member\-::\-Set\-First\-Name (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{new\-First\-Name}
+\end{DoxyParamCaption}
+)}}\label{class_member_adce4ba240d1ee7251d3dd832370d55d9}
+
+
+Set the first name of the member. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\-First\-Name} & The new first name of the member. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if the name is valid and false if it is not. 
+\end{DoxyReturn}
+\hypertarget{class_member_a196f091ea8067c5777b2b07184b0b6e1}{\index{Member@{Member}!Seti\-Button\-Addr@{Seti\-Button\-Addr}}
+\index{Seti\-Button\-Addr@{Seti\-Button\-Addr}!Member@{Member}}
+\subsubsection[{Seti\-Button\-Addr}]{\setlength{\rightskip}{0pt plus 5cm}bool Member\-::\-Seti\-Button\-Addr (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{new\-Addr}
+\end{DoxyParamCaption}
+)}}\label{class_member_a196f091ea8067c5777b2b07184b0b6e1}
+
+
+Set the i\-Button address of the member. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\-Addr} & The new keycode for the member. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if the keycode is valid and false if it isn't. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{_member_8h_ade1c978055c3c12b8f47e9a696bd27d6}{I\-B\-U\-T\-T\-O\-N\-\_\-\-B\-Y\-T\-E\-S} 
+\end{DoxySeeAlso}
+\hypertarget{class_member_a8ab627d627dc4a9aa572ed94f492c328}{\index{Member@{Member}!Set\-Last\-Name@{Set\-Last\-Name}}
+\index{Set\-Last\-Name@{Set\-Last\-Name}!Member@{Member}}
+\subsubsection[{Set\-Last\-Name}]{\setlength{\rightskip}{0pt plus 5cm}bool Member\-::\-Set\-Last\-Name (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{new\-Last\-Name}
+\end{DoxyParamCaption}
+)}}\label{class_member_a8ab627d627dc4a9aa572ed94f492c328}
+
+
+Set the last name of the member. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\-Last\-Name} & The new last name of the member. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if the name is valid and false if it is not. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+Code/\hyperlink{_member_8h}{Member.\-h}\item 
+Code/Member.\-cpp\end{DoxyCompactItemize}
