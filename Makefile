@@ -13,4 +13,4 @@ app-clean:
 	$(MAKE) -C "Code" clean
 
 docs-clean:
-	rm -r "./Docs/Doxygen/*"
+	-rm -r "./Docs/Doxygen/*"
