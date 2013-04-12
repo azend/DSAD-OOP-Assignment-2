@@ -58,4 +58,47 @@ bool Member::SetLastName ( std::string newLastName ) {
 	lastName = newLastName;
 }
 
+bool Member::CompareiButtonAddr( unsigned char * ibuttonAddr ) {
+	bool result = true;
+
+	// Before looking through the new address, make sure it is 
+	// even valid first
+	if ( VerifyiButtonAddr ( ibuttonAddr ) ) {
+
+		// Check each byte for correctness until an incorrect byte is found
+		for (int i = 0; (i < (sizeof ibuttonAddr) / (sizeof unsigned char)) && result; i++) {
+			// If the byte is incorrect, the iButtons are not the same
+			if ( this->ibuttonAddr[i] != ibuttonAddr[i] ) {
+				result = false;
+			}
+		}
+	}
+
+	return result;
+}
+
+bool Member::Equals ( Member & otherMember ) {
+	bool result = false;
+
+	if ( this == &otherMember ) {
+		// The memory locations are the same. No point in checking for anything else.
+		result = true;
+	}
+	else {
+		if ( firstName == otherMember.firstName &&
+			lastName == otherMember.lastName &&
+			CompareiButtonAddr(otherMember.GetiButtonAddr)
+		   ) {
+			result = true;
+		}
+	}
+
+	return result;
+}
+
+
+bool Member::operator== ( Member & otherMember ) {
+	return Equals(otherMember);
+}
+
 #endif

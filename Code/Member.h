@@ -97,7 +97,30 @@ class Member {
 		 */
 		bool SetLastName ( std::string newLastName );
 
+		/**
+		 * @brief Check if the iButtonAddress is the same as the one of the current object.
+		 *
+		 * @param ibuttonAddr The iButton address to be compared with against the current object.
+		 * @return Returns true if the iButtons are the same and false if they are not.
+		 * 
+		 * @see GetiButtonAddr
+		 * @see SetiButtonAddr
+		 */
+		bool CompareiButtonAddr ( unsigned char * ibuttonAddr );
 
+		/**
+		 * @brief Check if the member object passed in is the same as the current member object.
+		 *
+		 * @param member A member object to be compared.
+		 * @return Returns true if the objects are the same and false if they are not.
+		 */
+		bool Equals ( Member & otherMember );
+
+		/**
+		 * @brief Alias to Equals
+		 * @see Equals
+		 */
+		bool operator== ( Member & otherMember );
 };
 
 #endif
