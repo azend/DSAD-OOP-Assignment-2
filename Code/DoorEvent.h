@@ -26,8 +26,8 @@ class DoorEvent {
 private:
     char buttonAddr[IBUTTON_BYTES];///<This is where the i button value is stored
     bool status;///<indicates pass or fail
-    time_t currentTime;
-    struct tm * timeyWimeyStuff
+    time_t currentTime;///<
+    struct tm * timeyWimeyStuff///<this guy is for Verdi's love of doctor who
     char timeString[9]///<string that holds the time
     int errorLevel;///<for file IO errors
     
