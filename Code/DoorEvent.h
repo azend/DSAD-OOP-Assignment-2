@@ -21,10 +21,11 @@
 #include <stdlib.h>
 #include <ctime>
 #include <string.h>
+#include "Member.h"
 
 class DoorEvent {
 private:
-    char buttonAddr[IBUTTON_BYTES];///<This is where the i button value is stored
+    unsigned char buttonAddr[IBUTTON_BYTES];///<This is where the i button value is stored
     bool status;///<indicates pass or fail
     time_t currentTime;///<
     struct tm * timeyWimeyStuff///<this guy is for Verdi's love of doctor who
@@ -44,7 +45,10 @@ public:
     DoorEvent(){
         errorLevel = 0;
         status = false;
-        buttonAddr[0] = '\0';
+        for (int i = 0; i < IBUTTON_BYTES; i++){
+            buttonAddr[i] = 0;
+        }
+        buttonAddr[0] = ;
         time(&currentTime);
         timeyWimeyStuff = localtime(&currentTime);
         strftime(timeString, sizeof(timeString), "%H:%M:%S", timeyWimeyStuff);

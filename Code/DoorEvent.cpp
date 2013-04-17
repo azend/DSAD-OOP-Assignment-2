@@ -14,8 +14,9 @@
 ///
 
 void DoorEvent::SetAccessCode(char newAccessCode[]){
-    buttonAddr[0] = '\0';
-    strcpy(buttonAddr, newAccessCode);
+    for (int i = 0; i < IBUTTON_BYTES; i++){
+        buttonAddr[i] = newAccessCode[i];
+    }
 }
 
 ///
@@ -124,7 +125,7 @@ void DoorEvent::writeToLog(char * path){
         else if (errorLevel == 0){
             if (fread(inputBuffer, 1, fileSize, fp) == (unsigned int) fileSize){
                 if (status == true){
-                    fprintf(fp, "%s Access Granted %s\n", buttonAddr, timeString);
+                    fprintf(fp, "%s Access Granted %s\n", buttonAddr, timeString);//modify to remove string ref
                 }
                 else if (status == false){
                     fprintf(fp, "%s Access Denied %s\n", buttonAddr, timeString);

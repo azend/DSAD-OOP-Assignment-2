@@ -36,7 +36,7 @@ class DoorBot {
 		 * @brief Loads in members from the database.
 		 * @see MemberReader
 		 */
-		void LoadMembers();
+		void LoadMembers(); //depricated
 	
 	public:
 		/**

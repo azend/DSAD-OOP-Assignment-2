@@ -50,13 +50,33 @@ bool Member::SetiButtonAddr ( unsigned char * newAddr ) {
 }
 
 bool Member::SetFirstName ( std::string newFirstName ) {
-	firstName = newFirstName;
-	
+	bool valid = false;
+    if (sizeof(newFirstName) <= 30 && sizeof(newFirstName) > 0){
+        firstName = newFirstName;
+        valid = true;
+	}
+    else {
+        valid = false;
+    }
+    return valid;
 }
 
 bool Member::SetLastName ( std::string newLastName ) {
-	lastName = newLastName;
+	bool valid = false;
+    if (sizeof(newLastName) <= 30 && sizeof(newLastName) > 0){
+        lastName = newLastName;
+        valid = true;
+    }
+    else {
+        valid = false;
+    }
 }
+
+// - Ian's note
+// - Add these to the test harness when finished
+//                      |
+//                      |
+//                      V
 
 bool Member::CompareiButtonAddr( unsigned char * ibuttonAddr ) {
 	bool result = true;
