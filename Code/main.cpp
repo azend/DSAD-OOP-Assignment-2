@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
     
     //if there are no arguments start the daemon
     if (argc == 1){
+        /*
         DoorBot mrRoboto;
 	
         mrRoboto.SetDbPath("db.txt");
@@ -39,6 +40,10 @@ int main(int argc, char *argv[]) {
         mrRoboto.Setup();
 
         mrRoboto.Loop();
+        */
+        printf("We are a SCRUM agile dev team.  The daemon is scheduled for our next release.\n");
+        printf("If you have any questions, please email DSAD-OOP@azend.org\n");
+        printf("Thank You for choosing our software! Team Azend\n");
     }
     //if -admin is present, start the configuration utility
     else if (argc == 2 ){
@@ -48,6 +53,7 @@ int main(int argc, char *argv[]) {
             printf("The Daemon will need to be restarted if the database is updated.\n");
             printf("Do you wish to proceed (yes/no): ");
             while (1){
+                //Get a yes or no from the user
                 getline (cin, getInput);
                 if (getInput == "n" || getInput == "no"){
                     printf("Goodbye!\n");
