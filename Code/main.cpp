@@ -86,6 +86,10 @@ int main(int argc, char *argv[]) {
                             //Carlo's cheat method that populates the set with randomness
                             //but still works
                         }
+                        else {
+                            Sorry, invalid input.  Please enter a number from the list.
+                            clearScreen();
+                        }
                     }
                 }
                 else {
