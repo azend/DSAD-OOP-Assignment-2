@@ -1,9 +1,28 @@
+/**
+ *
+ * @file Project.cpp
+ *
+ * @brief  <b>Brief</b>This file contains the main function
+ * @details <b>Details</b>
+ * This file allows the program to operate in 3 states.  The first state is the daemon.
+ * This daemon runs until the an Ibutton key is detected.  It then compares it to a database
+ * to determine if the user has access and unlocks the door.  [-admin] The second state is the 
+ * configuration state.  This state allows the administrator to modify the database that the daemon 
+ * uses. Because this state is modifying the database, the daemon will need to be restarted to see
+ * the changes.  [--help] The third state is the help state and it gives a detailed statement on 
+ * usage.  All other arguments produce a usage statement.
+ *
+ * @author Ian Campbell and Verdi R-D
+ */
+
 #include <iostream>
 #include <string>
 #include "DoorBot.h"
 
+//namespaces
 using namespace std
 
+//Prototypes
 void clearScreen();
 
 int main(int argc, char *argv[]) {
@@ -26,8 +45,7 @@ int main(int argc, char *argv[]) {
         if (strcmp(argv[1], "-admin") == 0){
             
             printf("----Welcome to the Device Configuration Utility----\n\n");
-            printf("Please ensure that no other instances of this program are running.\n");
-            printf("Disaster could result.\n");
+            printf("The Daemon will need to be restarted if the database is updated.\n");
             printf("Do you wish to proceed (yes/no): ");
             while (1){
                 getline (cin, getInput);
@@ -87,26 +105,28 @@ int main(int argc, char *argv[]) {
                             //but still works
                         }
                         else {
-                            Sorry, invalid input.  Please enter a number from the list.
                             clearScreen();
+                            printf("Sorry, invalid input.  Please enter a number from the list.\n\n");
                         }
                     }
                 }
                 else {
                     getInput.clear;
-                    printf("Sorry, that was not valid, please enter again (yes/no): ")
+                    printf("Sorry, that was not valid, please enter again (yes/no): ");
                 }
             }
             
                 
             
         }
+        //If the help option is selected, print an extended usage blub.
         else if (strcmp(argv[1], "--help") == 0){
             printf("Beginning project without any options starts the iButton\n");
             printf("daemon.  Using -admin starts the program in configuration\n");
             printf("mode.  This allows the administrator to modify the master\n");
             printf("file that holds all the valid users.\n");
         }
+        //If invalid print usage statement.
         else {
             printf("Usage: project [-admin] or [--help]\n");
         }

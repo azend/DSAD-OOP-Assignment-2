@@ -2,7 +2,7 @@
 ///\file ErrorHandle.cpp
 ///
 
-#include "ErrorHandle.h>"
+#include "ErrorHandle.h"
 
 ///
 /// \brief <b>Brief Description</b> - This method is the default constructor
@@ -13,7 +13,7 @@
 /// \return This method does not return anything.
 ///
 
-ErrorHandle::ErrorHandle(){
+    ErrorHandle::ErrorHandle(){
     errorLevel = 0;
     time(&currentTime);
     timeStuff = localtime(&currentTime);
@@ -34,7 +34,7 @@ ErrorHandle::ErrorHandle(int setError){
     /*******************************************/
     /////CHANGE THIS WHEN ADDING NEW ERRORS//////
     /*******************************************/
-    if (setError > 0 && setError < 4){
+    if (setError >= 0 && setError < 3){
         errorLevel = setError;
     }
     else {
@@ -59,7 +59,7 @@ void ErrorHandle::SetErrorLevel(int newErrorLevel){
     /*******************************************/
     /////CHANGE THIS WHEN ADDING NEW ERRORS//////
     /*******************************************/
-    if (newErrorLevel > 0 && newErrorLevel < 4){ 
+    if (newErrorLevel >= 0 && newErrorLevel < 3){
         errorLevel = newErrorLevel;
     }
     else {
@@ -107,7 +107,7 @@ int ErrorHandle::WriteToErrorLog(){
         fprintf(fp, "ERROR: Invalid Error Detected %s\n", timeString);
     }
     fclose(fp); // risky business :-)
-    return errorLevel;
+    return 0;
 }
 
 ///
@@ -124,9 +124,10 @@ int ErrorHandle::ClearErrorLog(){
     FILE * fp = NULL;
     if ((fp = fopen("ErrorLog.txt", "wb")) == NULL){
         errorLevel = 15; //A special case error when a log file is broken.
-        return errorLevel; 
+        return errorLevel;
     }
     //print a header to the file
     fprintf(fp, "Starting the Error Log........ \n");
     fclose(fp);//muhahahaha
+    return 0;
 }
