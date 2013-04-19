@@ -124,7 +124,9 @@ int ErrorHandle::ClearErrorLog(){
     FILE * fp = NULL;
     if ((fp = fopen("ErrorLog.txt", "wb")) == NULL){
         errorLevel = 15; //A special case error when a log file is broken.
-        return errorLevel; //muhahaha
+        return errorLevel; 
     }
-    fclose(fp);
+    //print a header to the file
+    fprintf(fp, "Starting the Error Log........ \n");
+    fclose(fp);//muhahahaha
 }

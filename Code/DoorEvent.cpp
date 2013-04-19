@@ -8,12 +8,12 @@
 /// \brief <b>Brief Description</b> - Brings in a new I button code
 /// \details <b>Details</b>
 ///
-/// This method clears the old code and sets the new I button code. 
+/// This method clears the old code and sets the new I button code.
 ///
 /// \return This method does not return anything.
 ///
 
-void DoorEvent::SetAccessCode(char newAccessCode[]){
+void DoorEvent::SetAccessCode(unsigned char newAccessCode[]){
     for (int i = 0; i < IBUTTON_BYTES; i++){
         buttonAddr[i] = newAccessCode[i];
     }
@@ -52,8 +52,8 @@ void  DoorEvent::SetTime(time_t newCurrentTime){
 /// \return This method returns the I button code.
 ///
 
-char DoorEvent::GetAccessCode(){
-    return newAccessCode;
+unsigned char * DoorEvent::GetAccessCode(){
+    return buttonAddr;
 }
 
 ///
@@ -63,7 +63,7 @@ char DoorEvent::GetAccessCode(){
 ///
 
 
-int DoorEvent::GetStatus(){
+bool DoorEvent::GetStatus(){
     return status;
 }
 
@@ -74,7 +74,7 @@ int DoorEvent::GetStatus(){
 ///
 
 
-char DoorEvent::GetTime(){
+char * DoorEvent::GetTime(){
     return timeString;
 }
 
@@ -89,23 +89,57 @@ char DoorEvent::GetTime(){
 ///
 
 
-void DoorEvent::writeToLog(char * path){
+int DoorEvent::WriteToLog(){
     FILE * fp = NULL;
+    int i = 0;
     
-    //open the file that
+    //open the EventLog.txt in append mode 
     if (errorLevel == 0){
-        if ((fp = fopen(path, "ab")) == NULL){
+        if ((fp = fopen("EventLog.txt", "ab")) == NULL){
             errorLevel = 2;
         }
     }
     
     if (errorLevel == 0){
         if (status == true){
-            fprintf(fp, "%s Access Granted %s\n", buttonAddr, timeString);//modify to remove string ref
+            for (i = 0; i < IBUTTON_BYTES; i++) {
+                fprintf(fp, "%d ", buttonAddr[i]);
+            }
+            fprintf(fp, "Access Granted %s\n", timeString);
         }
         else if (status == false){
-            fprintf(fp, "%s Access Denied %s\n", buttonAddr, timeString);
+            for (i = 0; i < IBUTTON_BYTES; i++) {
+                fprintf(fp, "%d ", buttonAddr[i]);
+            }
+            fprintf(fp, "Access Denied %s\n", timeString);
         }
     }
+    //make sure to close the file 
     fclose(fp);
+    return errorLevel;
+}
+
+///
+/// \brief <b>Brief Description</b> - This method clears the Event Log
+/// \details <b>Details</b>
+///
+/// This method overwrites all data held in the Event Log and Places a Generic Header on it 
+///
+/// \return This method does not return anything.
+///
+
+int DoorEvent::ClearLog(){
+    FILE * fp = NULL;
+    
+    //Open EventLog.txt in write mode to wipe the data
+    if (errorLevel == 0){
+        if ((fp = fopen("EventLog.txt", "wb")) == NULL){
+            errorLevel = 2;
+        }
+        //Add a simple header to the file 
+        fprintf(fp, "Starting the Event Log....... \n");
+        //make sure to close the file
+        fclose(fp);
+    }
+    return errorLevel;
 }
