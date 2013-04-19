@@ -9,6 +9,7 @@
  *
  */
 
+#include <regex>
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -38,7 +39,7 @@ private:
 	static const bool VerifyiButtonAddr ( const vector<unsigned char> & ibuttonAddr );
 	static const bool VerifyFirstName ( const string & firstName );
 	static const bool VerifyLastName ( const string & lastName );
-	
+    
 public:
 	/* Constructors / Deconstructors */
 	
@@ -104,7 +105,7 @@ public:
 	const bool SetLastName ( const string & newLastName );
 
 	const bool Less ( const Member & otherMember );
-	const bool Less ( const vector<unsigned char> otheriButtonAddress );
+	const bool Less ( const vector<unsigned char> & otheriButtonAddress );
 
 	/**
 	 * @brief Check if the member object passed in is the same as the current member object.
@@ -120,10 +121,15 @@ public:
 	 * @see Equals
 	 */
 	const bool operator< ( const Member & otherMember );
-	const bool operator< ( const vector<unsigned char> otheriButtonAddress );
+	const bool operator< ( const vector<unsigned char> & otheriButtonAddress );
+    friend const bool operator< ( const Member & lhsMember, const Member & rhsMember );
+    friend const bool operator< ( const vector<unsigned char> & ibuttonAddress, const Member & member);
 
-	const bool operator== ( const Member & otherMember );
-	const bool operator== ( const vector<unsigned char> & otheriButtonAddress );
+	bool operator== ( const Member & otherMember );
+	bool operator== ( const vector<unsigned char> & otheriButtonAddress );
+    
+    friend ostream & operator<< (ostream & os, const Member & member);
+    friend istream & operator>> (istream & is, Member & member);
 };
 
 #endif

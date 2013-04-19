@@ -3,7 +3,8 @@
 
 #include "MemberStore.h"
 
-MemberStore::kDefaultDbPath = "db.txt";
+
+const string MemberStore::kDefaultDbPath = "db.txt";
 
 MemberStore::MemberStore() {
 	#ifdef DEBUG
@@ -17,55 +18,74 @@ MemberStore::~MemberStore() {
 	#endif
 }
 
-MemberStore::CreateMember ( Member newMember ) {
+
+ void MemberStore::CreateMember ( const Member & newMember ) {
 	#ifdef DEBUG
-	cout << "Adding a new member to the store:" << endl;
-	cout << "Validating member... ";
+	cout << "Adding a new member to the store... ";
 	#endif
 
-	if ( ValidateMember( newMember ) ) {
-		#ifdef DEBUG
-		cout << "[DONE]" << endl;
-		#endif
-
-		#ifdef DEBUG
-		cout << "Inserting verified member." << endl;
-		#endif
-		members.insert( newMember );
-	}
-	else {
-		#ifdef DEBUG
-		cout << "[FAIL]" << endl;
-		#endif
-	}
+    members.insert( newMember );
+    
+    #ifdef DEBUG
+    cout << "[DONE]" << endl;
+    #endif
 }
 
-// Replace with vector
 
-//Member::FindMemberWithiButton ( unsigned char * ibuttonAddress ) {
-//	// find_if 
-//}
-
-MemberStore::UpdateMember ( Member newMember ) {
-	#ifdef DEBUG
-	cout << "@TODO Implement update member" << endl;
-	#endif
+set<Member>::const_iterator MemberStore::FindMemberWithiButton ( const vector<unsigned char> & ibuttonAddr ) {
+    //return find ( members.begin(), members.end(), ibuttonAddr);
 }
 
-MemberStore::DeleteMember ( Member newMember ) {
-	#ifdef DEBUG
-	cout << "@TODO Implement delete member" << endl;
-	#endif
+
+void MemberStore::DeleteMember ( set<Member>::const_iterator it ) {
+    members.erase(it);
 }
 
-string MemberStore::GetDbPath() {
-	return dbPath;
+void MemberStore::DeleteMember ( const Member & member ) {
+    members.erase(member);
 }
 
-bool MemberStore::SetDbPath ( string newPath ) {
-	if ( ValidateDbPath ( newPath ) ) {
-		dbPath = newPath;
-	}
+void MemberStore::Clear() {
+    members.clear();
 }
+
+void MemberStore::LoadDb ( const string & path, const bool clearDbBeforeLoad ) {
+    if ( clearDbBeforeLoad ) {
+        members.clear();
+    }
+    
+    ifstream db ( path, ifstream::in );
+    
+    db >> *this;
+}
+
+void MemberStore::StoreDb ( const string & path ) {
+    
+    ofstream db ( path, ofstream::out );
+    
+    db << *this;
+}
+
+istream & operator>> ( istream & is, MemberStore & store ) {    
+    while ( is.good() ) {
+        Member newMember;
+        
+        is >> newMember;
+        
+        store.CreateMember(newMember);
+    }
+    
+    return is;
+}
+
+
+ostream & operator<< ( ostream & os, MemberStore & store ) {
+    for ( set<Member>::const_iterator it = store.members.begin(); it != store.members.end(); it++ ) {
+        os << *it;
+    }
+    
+    return os;
+}
+
 
 #endif
