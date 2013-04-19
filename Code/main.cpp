@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
         */
         printf("We are a SCRUM agile dev team.  The daemon is scheduled for our next release.\n");
         printf("If you have any questions, please email DSAD-OOP@azend.org\n");
-        printf("Thank You for choosing our software! Team Azend\n");
+        printf("Thank You for choosing our software! Team Azend!\n");
     }
     //if -admin is present, start the configuration utility
     else if (argc == 2 ){
@@ -75,31 +75,40 @@ int main(int argc, char *argv[]) {
                         printf("6, Save changes\n");
                         printf("7, Save changes and exit\n");
                         printf("8, Exit without saving\n");
-                        printf("9, Carlo Special: Cheat and add a bunch of random users to database\n\n");
+                        printf("9, Carlo Special: Cheat and add a bunch of random users to database\n");
+                        printf("10, Display the entire database\n\n");
                         printf("Please enter your choice: ");
                         //get a choice from the user
                         getline(cin, getInput);
                         
                         if (getInput == "1"){
                             //add a user to the set
+                            //todo get firstname, lastname, ibutton address
+                            //add to set
                         }
                         else if (getInput == "2"){
                             //delete a user from the set
+                            //todo delete a user from set
                         }
                         else if (getInput == "3"){
                             //delete the set
+                            //todo delete the set
                         }
                         else if (getInput == "4"){
                             //display a user
+                            //todo print the contents of the user to the screen
                         }
                         else if (getInput == "5"){
                             //open a new file and load it into the set
+                            //todo 1, delete the old set, 2, get new dbpath from user, 3, load new db to set
                         }
                         else if (getInput == "6"){
                             //save changes to db.txt
+                            //todo save set to db.txt
                         }
                         else if (getInput == "7"){
                             //save changes to db.txt and exit
+                            //todo save set to db.txt and quit
                         }
                         else if (getInput == "8"){
                             //exit without saving
@@ -109,6 +118,10 @@ int main(int argc, char *argv[]) {
                         else if (getInput == "9"){
                             //Carlo's cheat method that populates the set with randomness
                             //but still works
+                            //todo generate a bunch of random users and load them into the set
+                        }
+                        else if (getInput == "10"){
+                            //todo display the entire database
                         }
                         else {
                             clearScreen();
