@@ -48,7 +48,6 @@ public:
         for (int i = 0; i < IBUTTON_BYTES; i++){
             buttonAddr[i] = 0;
         }
-        buttonAddr[0] = ;
         time(&currentTime);
         timeyWimeyStuff = localtime(&currentTime);
         strftime(timeString, sizeof(timeString), "%H:%M:%S", timeyWimeyStuff);

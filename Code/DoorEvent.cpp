@@ -82,7 +82,7 @@ char DoorEvent::GetTime(){
 /// \brief <b>Brief Description</b> - This method writes entry data to the entry log
 /// \details <b>Details</b>
 ///
-/// This method writes the I button code, whether or not the code passed or failed and the
+/// This method writes the ibutton code, whether or not the code passed or failed and the
 /// time to the entry log.  It also uses errorLevel to keep track of any wrong doings.
 ///
 /// \return This method does not return anything.
@@ -91,25 +91,8 @@ char DoorEvent::GetTime(){
 
 void DoorEvent::writeToLog(char * path){
     FILE * fp = NULL;
-    long fileSize = 0;
-    unsigned char * inputBuffer = {0};
-    int i = 0; // only include if you use a loop
     
-    //get the size of the file that is about to be manipulated
-    if ((fp = fopen(path, "rb")) == NULL) {
-        errorLevel = 2;
-    }
-    
-    if (errorLevel == 0){
-        //get the size of the file and then point it back to the start
-        //bug!! will break if the file is bigger then 2gbs
-        fseek(fp, 0L, SEEK_END);
-        fileSize = ftell(fp);
-        fseek(fp, 0L, SEEK_SET);
-        fclose(fp);
-    }
-    
-    //open the file that you are working on
+    //open the file that
     if (errorLevel == 0){
         if ((fp = fopen(path, "ab")) == NULL){
             errorLevel = 2;
@@ -117,29 +100,12 @@ void DoorEvent::writeToLog(char * path){
     }
     
     if (errorLevel == 0){
-        if ((inputBuffer = (unsigned char*) malloc((fileSize + 1) * sizeof(unsigned char))) == NULL){
-            //In case of malloc error, make sure you attempt to free up any resources you are using.
-            errorLevel = 8;
-            fclose(fp);
+        if (status == true){
+            fprintf(fp, "%s Access Granted %s\n", buttonAddr, timeString);//modify to remove string ref
         }
-        else if (errorLevel == 0){
-            if (fread(inputBuffer, 1, fileSize, fp) == (unsigned int) fileSize){
-                if (status == true){
-                    fprintf(fp, "%s Access Granted %s\n", buttonAddr, timeString);//modify to remove string ref
-                }
-                else if (status == false){
-                    fprintf(fp, "%s Access Denied %s\n", buttonAddr, timeString);
-                }
-            }
-            else {
-                //In case of read error, make sure you attempt to free up any resources you are using.
-                errorLevel = 4;
-                free(inputBuffer);
-                fclose(fp);
-            }
+        else if (status == false){
+            fprintf(fp, "%s Access Denied %s\n", buttonAddr, timeString);
         }
     }
-    
-    free(inputBuffer);
     fclose(fp);
 }

@@ -64,6 +64,7 @@ bool DoorBot::SetDbPath ( std::string newPath ) {
 
 	if ( result = ValidateDbPath ( newPath ) ) {
 		dbPath = newPath;
+        result = true;
 	}
 
 	return result;

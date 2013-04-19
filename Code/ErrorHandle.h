@@ -15,15 +15,21 @@
 class ErrorHandle {
 
  private:
-  int errorHandle;
-  time_t currentTime;
-  struct *tm timeStuff;
-  char timeSting[];
+    int errorLevel;///<This holds an integer that repressents horrible error monsters
+    time_t currentTime;///<Some ctime stuff
+    struct *tm timeStuff;///<A pointer to a ctime struct
+    char timeString[];///<A string that holds the current time in Hours:Minutes:Seconds
 
  public:
-  ErrorHandle();
-  ErrorHandle(int errorLevel);
-  void SetErrorLevel(int newErrorLevel);
-  int GetErrorLevel();
-  int WriteToErrorLog();
-}
+    //constructors
+    ErrorHandle();
+    ErrorHandle(int errorLevel);
+    //mutator
+    void SetErrorLevel(int newErrorLevel);
+    //accessor
+    int GetErrorLevel();
+    //write the error to an error log
+    int WriteToErrorLog();
+    //clear the error log
+    int ClearErrorLog();
+};
