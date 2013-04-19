@@ -66,10 +66,10 @@ int main(int argc, char *argv[]) {
                         printf("3, Delete entire database\n");
                         printf("4, Display a user\n");
                         printf("5, Copy a new user list from file\n");
-                        printf("6, Save to db.txt\n");
-                        printf("7, Save to db.txt and exit\n");
+                        printf("6, Save changes\n");
+                        printf("7, Save changes and exit\n");
                         printf("8, Exit without saving\n");
-                        printf("9, Cheat and add a bunch of random users to database\n\n");
+                        printf("9, Carlo Special: Cheat and add a bunch of random users to database\n\n");
                         printf("Please enter your choice: ");
                         //get a choice from the user
                         getline(cin, getInput);
