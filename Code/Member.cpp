@@ -2,130 +2,190 @@
 #define _MEMBER_CPP_
 
 #include "Member.h"
+
+const int Member::kiButtonLength = 7;
+const int Member::kFirstNameLength = 30;
+const int Member::kLastNameLength = 30;
+
 /*******************************************************************/
-bool Member::VerifyiButtonAddr ( unsigned char * ibuttonAddr, int arraySize) {
+const bool Member::VerifyiButtonAddr ( const vector<unsigned char> & ibuttonAddr) {
 	bool result = false;
-    unsigned long size;
-    size = sizeof(*ibuttonAddr);
-    printf("%ld", size);
-	if (arraySize == ((sizeof (unsigned char)) * IBUTTON_BYTES)) {
-        if (ibuttonAddr != NULL){
-            result = true;
-        }
+	
+	if ( ibuttonAddr.size() == kiButtonLength ) {
+		result = true;
 	}
-    
+
+	return result;
+}
+/*******************************************************************/
+const bool Member::VerifyFirstName ( const string & firstName ) {
+	bool result = false;
+
+	if ( firstName.size() <= kFirstNameLength ) {
+		result = true;
+	}
+	
+	return result;
+}
+/*******************************************************************/
+const bool Member::VerifyLastName ( const string & lastName ) {
+	bool result = false;
+
+	if ( lastName.size() <= kLastNameLength ) {
+		result = true;
+	}
+
 	return result;
 }
 /***********************************************************/
 Member::Member() {
-    for (int i = 0; i < 7; i++){
-        ibuttonAddr[i] = 0;
-    }
+
+	for (int i = 0; i < kiButtonLength; i++) {
+		ibuttonAddr.push_back(0);
+	}
+
 	firstName = "";
 	lastName = "";
+
 }
 /*********************************************************/
 Member::~Member() {
-	
+	// Nothing we need to do here really
 }
 /*********************************************************/
-unsigned char * Member::GetiButtonAddr() {
+/*
+Member::operator= () {
+
+}
+*/
+/*********************************************************/
+const vector<unsigned char> Member::GetiButtonAddr() {
 	return ibuttonAddr;
 }
 /**********************************************************/
-std::string Member::GetFirstName() {
+const string Member::GetFirstName() {
 	return firstName;
 }
 /************************************************************/
-std::string Member::GetLastName() {
+const string Member::GetLastName() {
 	return lastName;
 }
 /***********************************************************/
-bool Member::SetiButtonAddr ( unsigned char * newAddr, int arraySize) {
+const bool Member::SetiButtonAddr ( const vector<unsigned char> & newiButtonAddr ) {
 	bool result = false;
-	if (VerifyiButtonAddr(newAddr, arraySize) == true) {
-		for (int x = 0; x < IBUTTON_BYTES; x++) {
-			ibuttonAddr[x] = newAddr[x];
-		}
-        
+
+	if ( VerifyiButtonAddr ( newiButtonAddr ) ) {
+		ibuttonAddr = newiButtonAddr;
+
 		result = true;
 	}
-    
+	
 	return result;
 }
 /**************************************************************/
-bool Member::SetFirstName ( std::string newFirstName ) {
-	bool valid = false;
-    if (newFirstName.length() <= 30 && newFirstName.length() > 0){
-        firstName = newFirstName;
-        valid = true;
+const bool Member::SetFirstName ( const string & newFirstName ) {
+	bool changed = false;
+
+	if ( VerifyFirstName( newFirstName ) ) {
+		firstName = newFirstName;
+		changed = true;
 	}
-    else {
-        valid = false;
-    }
-    return valid;
+	
+	return changed;
 }
 /*************************************************************/
-bool Member::SetLastName ( std::string newLastName ) {
-	bool valid = false;
-    if (newLastName.length() <= 30 && newLastName.length() > 0){
-        lastName = newLastName;
-        valid = true;
-    }
-    else {
-        valid = false;
-    }
-    return valid;
+const bool Member::SetLastName ( const string & newLastName ) {
+	bool changed = false;
+
+	if ( VerifyLastName ( newLastName ) ) {
+		lastName = newLastName;
+		changed = true;
+	}
+	
+	return changed;
 }
 
-// - Ian's note
-// - Add these to the test harness when finished
-//                      |
-//                      |
-//                      V
-/***************************************************************************/
-bool Member::CompareiButtonAddr( unsigned char * ibuttonAddr, int arraySize) {
-	bool result = true;
-    
-	// Before looking through the new address, make sure it is
-	// even valid first
-	if ( VerifyiButtonAddr ( ibuttonAddr, arraySize ) ) {
-        
-		// Check each byte for correctness until an incorrect byte is found
-		for (int i = 0; (i < (sizeof ibuttonAddr) / (sizeof (unsigned char)) && result); i++) {
-			// If the byte is incorrect, the iButtons are not the same
-			if ( this->ibuttonAddr[i] != ibuttonAddr[i] ) {
-				result = false;
+/**************************************************************************/
+const bool Member::Less ( const Member & otherMember ) {
+	bool result = false;
+
+	if ( this == &otherMember ) {
+		// Objects point to the same place
+		// Obviously these objects are the same and so the test will fail
+	}
+	else {
+		vector<unsigned char> otherMemberId = otherMember.GetiButtonAddr();
+		vector<unsigned char>::const_iterator it = ibuttonAddr.begin();
+		vector<unsigned char>::const_iterator otherIt = otherMemberId.begin();
+		
+		while ( it != ibuttonAddr.end() ) {
+			if ( *it < *otherId ) {
+				result = true;
+				break;
+			}
+			else if ( *it > *otherId ) {
+				break;
+			}
+			else {
+				++it;
+				++otherIt;
 			}
 		}
 	}
-    
+
 	return result;
 }
 /**************************************************************************/
-bool Member::Equals ( Member & otherMember ) {
+const bool Member::Less ( const vector<unsigned char> & otheriButtonAddress ) {
+	Member tempMember;
+
+	tempMember.SetiButtonAddress(otheriButtonAddress);
+
+	return Less(tempMember);
+}
+/**************************************************************************/
+const bool Member::Equals ( const Member & otherMember ) {
 	bool result = false;
-    
+	
 	if ( this == &otherMember ) {
 		// The memory locations are the same. No point in checking for anything else.
 		result = true;
 	}
 	else {
-		if ( firstName == otherMember.firstName &&
-			lastName == otherMember.lastName &&
-			CompareiButtonAddr(otherMember.GetiButtonAddr(), sizeof(otherMember.GetiButtonAddr()))
-            ) {
+		if ( firstName == otherMember.firstName && lastName == otherMember.lastName && ibuttonAddr == otherMember.GetiButtonAddr() ) {
 			result = true;
 		}
 	}
-    
+	
 	return result;
 }
-
 /*****************************************************************************/
-bool Member::operator== ( Member & otherMember ) {
+const bool Member::Equals ( const vector<unsigned char> & otheriButtonAddr ) {
+	bool result = false;
+
+	if ( ibuttonAddr == otheriButtonAddress ) {
+		result = true;
+	}
+
+	return result;
+}
+/*****************************************************************************/
+const bool Member::operator< ( const Member & otherMember ) {
+	return Less(otherMember);
+}
+
+const bool Member::operator< ( const vector<unsigned char> otheriButtonAddress ) {
+	return Less(otheriButtonAddress);
+}
+
+const bool Member::operator== ( const Member & otherMember ) {
 	return Equals(otherMember);
 }
+
+const bool Member::operator== ( const vector<unsigned char> otheriButtonAddress ) {
+	return Equals(otheriButtonAddress);
+}
+
 
 #endif
 
