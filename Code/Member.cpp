@@ -1,11 +1,3 @@
-/**
- *
- * @file Member.cpp
- *
- * @brief This file contains the methods for the Member class.
- * @author Ian Campbell and Verdi R-D
- */
-
 #ifndef _MEMBER_CPP_
 #define _MEMBER_CPP_
 
@@ -29,7 +21,7 @@ const bool Member::VerifyiButtonAddr ( const vector<unsigned char> & ibuttonAddr
 const bool Member::VerifyFirstName ( const string & firstName ) {
 	bool result = false;
 
-	if ( firstName.size() <= kFirstNameLength ) {
+	if ( firstName.size() <= kFirstNameLength && firstName.find(";") == string::npos ) {
 		result = true;
 	}
 	
@@ -39,7 +31,7 @@ const bool Member::VerifyFirstName ( const string & firstName ) {
 const bool Member::VerifyLastName ( const string & lastName ) {
 	bool result = false;
 
-	if ( lastName.size() <= kLastNameLength ) {
+	if ( lastName.size() <= kLastNameLength && lastName.find(";") == string::npos ) {
 		result = true;
 	}
 
@@ -67,15 +59,39 @@ Member::operator= () {
 }
 */
 /*********************************************************/
-const vector<unsigned char> Member::GetiButtonAddr() {
+const vector<unsigned char> Member::GetiButtonAddr() const {
 	return ibuttonAddr;
 }
+
+const string Member::GetiButtonAddrStr() const {
+    string result;
+    
+    // Buffer of 1 byte written out in hex + null termination
+    char buffer[3];
+    
+    for ( vector<unsigned char>::const_iterator it = ibuttonAddr.cbegin(); it != ibuttonAddr.cend(); it++ ) {
+        
+        sprintf(buffer, "%02X", *it);
+        
+        if ( it != --(ibuttonAddr.cend() ) ) {
+
+            result += buffer;
+            result += ":";
+        }
+        else {
+            result += buffer;
+        }
+        
+    }
+    
+    return result;
+}
 /**********************************************************/
-const string Member::GetFirstName() {
+const string Member::GetFirstName() const {
 	return firstName;
 }
 /************************************************************/
-const string Member::GetLastName() {
+const string Member::GetLastName() const {
 	return lastName;
 }
 /***********************************************************/
@@ -114,7 +130,7 @@ const bool Member::SetLastName ( const string & newLastName ) {
 }
 
 /**************************************************************************/
-const bool Member::Less ( const Member & otherMember ) {
+const bool Member::Less ( const Member & otherMember ) const {
 	bool result = false;
 
 	if ( this == &otherMember ) {
@@ -143,7 +159,7 @@ const bool Member::Less ( const Member & otherMember ) {
 	return result;
 }
 /**************************************************************************/
-const bool Member::Less ( const vector<unsigned char> & otheriButtonAddress) {
+const bool Member::Less ( const vector<unsigned char> & otheriButtonAddress) const{
 	Member tempMember;
 
 	tempMember.SetiButtonAddr(otheriButtonAddress);
@@ -151,7 +167,7 @@ const bool Member::Less ( const vector<unsigned char> & otheriButtonAddress) {
 	return Less(tempMember);
 }
 /**************************************************************************/
-const bool Member::Equals ( const Member & otherMember ) {
+const bool Member::Equals ( const Member & otherMember ) const {
 	bool result = false;
 	
 	if ( this == &otherMember ) {
@@ -167,7 +183,7 @@ const bool Member::Equals ( const Member & otherMember ) {
 	return result;
 }
 /*****************************************************************************/
-const bool Member::Equals ( const vector<unsigned char> & otheriButtonAddr ) {
+const bool Member::Equals ( const vector<unsigned char> & otheriButtonAddr ) const {
 	bool result = false;
 
 	if ( ibuttonAddr == otheriButtonAddr ) {
@@ -177,17 +193,16 @@ const bool Member::Equals ( const vector<unsigned char> & otheriButtonAddr ) {
 	return result;
 }
 /*****************************************************************************/
-const bool Member::operator< ( const Member & otherMember ) {
+const bool Member::operator< ( const Member & otherMember ) const {
 	return Less(otherMember);
 }
 
-/**********************************************************************************/
-const bool Member::operator< ( const vector<unsigned char> & otheriButtonAddress ) {
+const bool Member::operator< ( const vector<unsigned char> & otheriButtonAddress ) const {
 	return Less(otheriButtonAddress);
 }
 
-/**********************************************************************************/
-const bool operator< ( const Member & lhsMember, const Member & rhsMember ) {
+/*
+const bool operator< ( const Member & lhsMember, const Member & rhsMember ){
     
     bool result = false;
     
@@ -216,8 +231,8 @@ const bool operator< ( const Member & lhsMember, const Member & rhsMember ) {
     
     return result;
 }
+*/ 
 
-/********************************************************************************/
 /*
 const bool operator< ( const vector<unsigned char> & ibuttonAddress, const Member & member) {
     Member tempMember;
@@ -227,14 +242,12 @@ const bool operator< ( const vector<unsigned char> & ibuttonAddress, const Membe
     return tempMember < member;
 }
 */
-
-/*******************************************************************************/
-bool Member::operator== ( const Member & otherMember ) {
+ 
+bool Member::operator== ( const Member & otherMember ) const {
 	return Equals(otherMember);
 }
 
-/*******************************************************************************/
-bool Member::operator== ( const vector<unsigned char> & otheriButtonAddress ) {
+bool Member::operator== ( const vector<unsigned char> & otheriButtonAddress ) const {
 	return Equals(otheriButtonAddress);
 }
 
@@ -253,32 +266,36 @@ ostream & operator<< ( ostream & os, const Member & member ) {
     return os;
 }
 
-/*******************************************************************************/
 istream & operator>> (istream & is, Member & member) {
     string buffer;
-    string numbuf;
     getline(is, buffer);
     
-    smatch sm;
-    if ( regex_match( buffer, sm, regex("^(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3});([!\\w\\d ]{0,30});([-'!\\w\\d ]{0,30})$") ) ) {
-        
-        vector<unsigned char> ibuttonAddr;
-        
-        //numbuf = sm[2];
-        
-        for (int x = 1; x < 8; x++) {
-            ibuttonAddr.push_back( (unsigned char) atoi( sm.str(x).c_str() ) );
-        }
-        
-        member.SetiButtonAddr(ibuttonAddr);
-        member.SetFirstName(sm.str(8));
-        member.SetLastName(sm.str(9));
-
+    if ( buffer.empty() ) {
+        cerr << "Record empty. Ignoring." << endl;
     }
     else {
-        cerr << "Parsing member record failed:" << endl;
-        cerr << "\t\"" << buffer << "\"" << endl;
+        smatch sm;
+        if ( regex_match( buffer, sm, regex("^(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3});([ !\\w\\d]{0,30});([ -'!\\w\\d]{0,30})\r?$") ) ) {
+
+//        if ( regex_match( buffer, sm, regex("^") ) ) {
+            vector<unsigned char> ibuttonAddr;
+            
+            
+            for (int x = 1; x < 8; x++) {
+                ibuttonAddr.push_back( (unsigned char) atoi( sm.str(x).c_str() ) );
+            }
+            
+            member.SetiButtonAddr(ibuttonAddr);
+            member.SetFirstName(sm.str(8));
+            member.SetLastName(sm.str(9));
+            
+        }
+        else {
+            cerr << "Corrupt db record found parsing member records: \"" << buffer << "\"" << endl;
+        }
     }
+    
+    
     
     return is;
 }

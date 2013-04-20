@@ -3,6 +3,8 @@
 
 #include "DoorBot.h"
 
+/*
+ 
 bool DoorBot::ValidateDbPath ( std::string path ) {
 	bool result = false;
 
@@ -69,5 +71,7 @@ bool DoorBot::SetDbPath ( std::string newPath ) {
 
 	return result;
 }
+
+ */
 
 #endif

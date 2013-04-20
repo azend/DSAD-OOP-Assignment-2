@@ -7,72 +7,143 @@
 const string MemberStore::kDefaultDbPath = "db.txt";
 
 MemberStore::MemberStore() {
-	#ifdef DEBUG
-	cout << "MemberStore is now online." << endl;
-	#endif
+    hasChanged = false;
 }
 
 MemberStore::~MemberStore() {
-	#ifdef DEBUG
-	cout << "MemberStore is sinking!!1 Helpp meencsdocndioscndsioc *MemberStore drowns*" << endl;
-	#endif
+
 }
 
 
- void MemberStore::CreateMember ( const Member & newMember ) {
+ void MemberStore::CreateMember ( const Member & newMember, const bool quiet ) {
 	#ifdef DEBUG
-	cout << "Adding a new member to the store... ";
+	//cout << "Adding a new member to the store... ";
 	#endif
 
     members.insert( newMember );
+     
+     hasChanged = true;
     
     #ifdef DEBUG
-    cout << "[DONE]" << endl;
+    //cout << "[DONE]" << endl;
     #endif
 }
 
 
 set<Member>::const_iterator MemberStore::FindMemberWithiButton ( const vector<unsigned char> & ibuttonAddr ) {
-    //return find ( members.begin(), members.end(), ibuttonAddr);
+    
+    set<Member>::const_iterator it = members.cbegin();
+    while ( it != members.cend() ) {
+        
+        if ( it->Equals( ibuttonAddr ) ) {
+            // Address found
+            break;
+        }
+        
+        it++;
+    }
+    
+    return it;
+}
+
+vector<const Member*> MemberStore::FindMemberWithFirstName(const string &firstName) {
+    vector<const Member*> results;
+    
+    set<Member>::const_iterator it = members.cbegin();
+    while ( it != members.cend() ) {
+        
+        if ( it->GetFirstName().find(firstName) != string::npos ) {
+            results.push_back(&*it);
+            //results.push_back(&*it);
+        }
+        
+        it++;
+    }
+    
+    return results;
+}
+
+vector<const Member*> MemberStore::GetAllMembers () {
+    vector<const Member*> vMembers;
+
+    set<Member>::const_iterator it = members.cbegin();
+    while ( it != members.cend() ) {
+        
+        vMembers.push_back(&*it);
+        
+        it++;
+    }
+    
+    return vMembers;
+}
+
+const int MemberStore::CountMembers() {
+    return int(members.size());
+}
+
+const bool MemberStore::CanHold( unsigned long numMembers) {
+    return numMembers < members.max_size();
+}
+
+const bool MemberStore::HasChangedSinceLastSave() {
+    return hasChanged;
 }
 
 
 void MemberStore::DeleteMember ( set<Member>::const_iterator it ) {
     members.erase(it);
+    hasChanged = true;
 }
 
 void MemberStore::DeleteMember ( const Member & member ) {
     members.erase(member);
+    hasChanged = true;
 }
 
 void MemberStore::Clear() {
     members.clear();
+    hasChanged = true;
 }
 
-void MemberStore::LoadDb ( const string & path, const bool clearDbBeforeLoad ) {
+const bool MemberStore::LoadDb ( const string & path, const bool clearDbBeforeLoad ) {
+    bool result = false;
+    
     if ( clearDbBeforeLoad ) {
         members.clear();
     }
     
     ifstream db ( path, ifstream::in );
     
-    db >> *this;
+    if ( db ) {
+        db >> *this;
+        result = true;
+    }
+    
+    return result;
 }
 
-void MemberStore::StoreDb ( const string & path ) {
+const bool MemberStore::StoreDb ( const string & path ) {
+    bool result = false;
     
     ofstream db ( path, ofstream::out );
     
-    db << *this;
+    if ( db ) {
+        db << *this;
+        result = true;
+    }
+    
+    hasChanged = false;
+    
+    return result;
 }
 
-istream & operator>> ( istream & is, MemberStore & store ) {    
+istream & operator>> ( istream & is, MemberStore & store ) {
     while ( is.good() ) {
         Member newMember;
         
         is >> newMember;
         
-        store.CreateMember(newMember);
+        store.CreateMember(newMember, true);
     }
     
     return is;
