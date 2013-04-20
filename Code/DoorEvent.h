@@ -21,8 +21,7 @@
 #include <stdlib.h>
 #include <ctime>
 #include <string.h>
-
-#define IBUTTON_BYTES 7
+#include "Member.h"
 
 class DoorEvent {
 private:
