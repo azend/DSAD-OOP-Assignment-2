@@ -18,7 +18,7 @@
 #include <iostream>
 #include <string>
 #include "Member.h"
-#include "DoorBot.h"
+//#include "DoorBot.h"
 #include "MemberStore.h"
 
 //namespaces
@@ -30,6 +30,7 @@ void clearScreen();
 void clearScreen() {
     //the saddest little function :-)
     int i = 0;
+    int breakFlag = 0;
     for (i = 0; i < 10; i++){
         printf( "\n\n\n\n\n\n\n\n\n\n" );
     }
@@ -164,45 +165,123 @@ int main(int argc, char *argv[]) {
                             cout << "Now adding the new member to the store... ";
                             store.CreateMember(newMember);
                             cout << "[DONE]" << endl;
+                            cout << "Press Enter to continue" << endl;
+                            getline(cin, getInput);
+                            getInput.clear();
+                            
+                            clearScreen();
                             
                             
                         }
                         else if (getInput == "2"){
-                            //delete a user from the set
-                            //todo delete a user from set
+                            cout << "Delete Member Wizard" << endl;
+                            cout << "--------------------" << endl;                            
+                            cout << "Please enter the name of the person you wish to delete" << endl;
+                            cout << "Name:";
+                            
+                            getline(cin, getInput);
+                            
+                            //find the name
+                            if (/*name not found*/){
+                                cout << "Sorry, that name is not in the database" <<endl;
+                            }
+                            else {
+                                //delete user
+                                cout << "Member successfully deleted." << endl;
+                            }
+                            getInput.clear();
+                            cout << "Press Enter to continue" << endl;
+                            getline(cin, getInput);
+                            getInput.clear();
+                            clearScreen();
+                            
                         }
                         else if (getInput == "3"){
-                            //delete the set
-                            //todo delete the set
+                            cout << "WARNING: Are you sure you want to erase the database? (yes/no)" << endl;
+                            getline(cin, getInput);
+                            if (getInput == "yes" || getInput == "y" || getInput == "Yes" || getInput == "Y"){
+                                //delete the set
+                                cout << "Database erased successfully" << endl;
+                                cout << "Press Enter to continue" << endl;
+                                getline(cin, getInput);
+                                getInput.clear();
+                            }
+                            clearScreen();
                         }
                         else if (getInput == "4"){
-                            //display a user
-                            //todo print the contents of the user to the screen
+                            cout << "View Member Wizard" << endl;
+                            cout << "------------------" << endl;
+                            cout << "Please enter the name of the person you wish to view" << endl;
+                            cout << "Name:";
+                            
+                            getline(cin, getInput);
+                            
+                            //find the name
+                            if (/*name not found*/){
+                                cout << "Sorry, that name is not in the database" <<endl;
+                            }
+                            else {
+                                //display user
+                                getInput.clear();
+                            }
+                            getInput.clear();
+                            cout << "Press Enter to Continue" << endl;
+                            getline(cin, getInput);
+                            getInput.clear();
+                            clearScreen();
                         }
                         else if (getInput == "5"){
-                            //open a new file and load it into the set
-                            //todo 1, delete the old set, 2, get new dbpath from user, 3, load new db to set
+                            cout << "Import New Database Wizard" << endl;
+                            cout << "--------------------------" << endl;
+                            cout << "Please type a valid path to a new database file." << endl;
+                            cout << "Path: ";
+                            getline(cin, getInput);
+                            if (/*input is valid*/){
+                                //new database
+                            }
+                            
                         }
                         else if (getInput == "6"){
-                            //save changes to db.txt
-                            //todo save set to db.txt
+                            cout << "Saving Database" << endl;
+                            //save
+                            clearScreen();
                         }
                         else if (getInput == "7"){
-                            //save changes to db.txt and exit
-                            //todo save set to db.txt and quit
+                            cout << "Saving Database" << endl;
+                            store.~MemberStore;
+                            cout << "Goodbye" << endl;
+                            cout << "Press Enter to Continue" << endl;
+                            getline(cin, getInput);
+                            getInput.clear();
+                            breakFlag = 1;
+                            break;
                         }
                         else if (getInput == "8"){
                             //exit without saving
                             printf("\nGoodbye\n");
-                            return 0;
+                            cout << "Press Enter to Continue" << endl;
+                            getline(cin, getInput);
+                            getInput.clear();
+                            breakFlag = 1;
+                            break;
                         }
                         else if (getInput == "9"){
-                            //Carlo's cheat method that populates the set with randomness
-                            //but still works
-                            //todo generate a bunch of random users and load them into the set
+                            cout << "The Cheater Wizard" << endl;
+                            cout << "------------------" << endl;
+                            //populate database
+                            cout << "Success!" << endl;
+                            cout << "Press Enter to Continue" << endl;
+                            getline(cin, getInput);
+                            getInput.clear();
+                            clearScreen();                            
                         }
                         else if (getInput == "10"){
-                            //todo display the entire database
+                            cout << "Printing Database....." << endl;
+                            //print database
+                            cout << "Press Enter to Continue" << endl;
+                            getline(cin, getInput);
+                            getInput.clear();
+                            clearScreen();
                         }
                         else {
                             clearScreen();
@@ -213,6 +292,9 @@ int main(int argc, char *argv[]) {
                 else {
                     getInput.clear();
                     printf("Sorry, that was not valid, please enter again (yes/no): ");
+                }
+                if (breakFlag == 1){
+                    break;
                 }
             }
             

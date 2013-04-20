@@ -1,6 +1,6 @@
 ///
 ///\file TestDriver1
-///\brief This driver runs a series of tests on the methods in the DoorEvent class
+///\brief This driver runs a series of tests on the accessors and mutators in the DoorEvent class
 ///
 ///\author Ian & Verdi
 
