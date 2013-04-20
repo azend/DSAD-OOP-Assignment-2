@@ -1,3 +1,11 @@
+/**
+ *
+ * @file Member.cpp
+ *
+ * @brief This file contains the methods for the Member class.
+ * @author Ian Campbell and Verdi R-D
+ */
+
 #ifndef _MEMBER_CPP_
 #define _MEMBER_CPP_
 
@@ -173,10 +181,12 @@ const bool Member::operator< ( const Member & otherMember ) {
 	return Less(otherMember);
 }
 
+/**********************************************************************************/
 const bool Member::operator< ( const vector<unsigned char> & otheriButtonAddress ) {
 	return Less(otheriButtonAddress);
 }
 
+/**********************************************************************************/
 const bool operator< ( const Member & lhsMember, const Member & rhsMember ) {
     
     bool result = false;
@@ -207,6 +217,7 @@ const bool operator< ( const Member & lhsMember, const Member & rhsMember ) {
     return result;
 }
 
+/********************************************************************************/
 /*
 const bool operator< ( const vector<unsigned char> & ibuttonAddress, const Member & member) {
     Member tempMember;
@@ -216,11 +227,13 @@ const bool operator< ( const vector<unsigned char> & ibuttonAddress, const Membe
     return tempMember < member;
 }
 */
- 
+
+/*******************************************************************************/
 bool Member::operator== ( const Member & otherMember ) {
 	return Equals(otherMember);
 }
 
+/*******************************************************************************/
 bool Member::operator== ( const vector<unsigned char> & otheriButtonAddress ) {
 	return Equals(otheriButtonAddress);
 }
@@ -240,6 +253,7 @@ ostream & operator<< ( ostream & os, const Member & member ) {
     return os;
 }
 
+/*******************************************************************************/
 istream & operator>> (istream & is, Member & member) {
     string buffer;
     string numbuf;

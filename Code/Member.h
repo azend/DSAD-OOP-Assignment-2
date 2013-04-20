@@ -6,7 +6,7 @@
  * @file Member.h
  *
  * @brief This file contains the Member class.
- *
+ * @author Ian Campbell and Verdi R-D
  */
 
 #include <regex>
@@ -16,14 +16,17 @@ using namespace std;
 
 /**
  * @class Member
- * @brief This class models basic properties of a member at Diyode.
+ * @brief This class is a data container that holds members of Diyode.
+ * @details
  *
+ * This class is a data container that holds the first and last name of the member 
+ * and their iButton number.
  */
 class Member {
 private:
 	static const int kiButtonLength; /**< The number of bytes in an iButton address */
-	static const int kFirstNameLength;
-	static const int kLastNameLength;
+	static const int kFirstNameLength;/**< The max number of characters in the first name */
+	static const int kLastNameLength;/**< The max number of characters in the last name */
 	
 	vector<unsigned char> ibuttonAddr; /**< The address of an iButton key code. In real life, it looks much like a MAC address */
 	string firstName; /**< The first name of the member */
@@ -32,12 +35,28 @@ private:
 	/**
 	 * @brief Verifies that the iButton code is valid.
 	 *
-	 * @param ibuttonAddr The address of an iButton key code. It must be IBUTTON_BYTES bytes long.
+	 * @param ibuttonAddr - The address of an iButton key code. It must be kiButtonLength bytes long.
 	 * @return Returns true if the test passed and false if it didn't
-	 * @see IBUTTON_BYTES
+	 * @see kiButtonLength
 	 */
 	static const bool VerifyiButtonAddr ( const vector<unsigned char> & ibuttonAddr );
-	static const bool VerifyFirstName ( const string & firstName );
+
+    /**
+	 * @brief Verifies that the first name is valid
+	 *
+	 * @param firstName - The address of the firstName. must be kFirstNameLength long
+	 * @return Returns true if the test passed and false if it didn't
+	 * @see kFirstNameLength
+	 */
+    static const bool VerifyFirstName ( const string & firstName );
+    
+    /**
+	 * @brief Verifies that the last name is valid
+	 *
+	 * @param firstName - The address of the lastName. must be kLastNameLength long
+	 * @return Returns true if the test passed and false if it didn't
+	 * @see kLastNameLength
+	 */
 	static const bool VerifyLastName ( const string & lastName );
     
 public:
@@ -103,8 +122,22 @@ public:
 	 * @return Returns true if the name is valid and false if it is not.
 	 */
 	const bool SetLastName ( const string & newLastName );
-
+    
+    /**
+     * @brief Checks to see if one member is less then other.
+     *
+     * @param The two members that are being compared
+     * @return Returns a boolean value based on which one was less then the other
+     */
 	const bool Less ( const Member & otherMember );
+    
+    /**
+     * @brief Checks to see if one iButton Address is less then the other
+     *
+     * @param The iButton value to be compared
+     * @return A boolean value that is the result of passing a temporary member object 
+     * into the other overloaded less method.
+     */
 	const bool Less ( const vector<unsigned char> & otheriButtonAddress );
 
 	/**
@@ -114,6 +147,13 @@ public:
 	 * @return Returns true if the objects are the same and false if they are not.
 	 */
 	const bool Equals ( const Member & otherMember );
+    
+    /**
+	 * @brief Check if the iButton value passed in is the same as the current iButtonValue.
+	 *
+	 * @param The iButton Value to be compared.
+	 * @return Returns true if the iButtonValues are the same and false if they are not.
+	 */
 	const bool Equals ( const vector<unsigned char> & otheriButtonAddress );
 	
 	/**
