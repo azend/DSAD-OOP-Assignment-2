@@ -291,11 +291,13 @@ istream & operator>> (istream & is, Member & member) {
     getline(is, buffer);
     
     if ( buffer.empty() ) {
-        cerr << "Record empty. Ignoring." << endl;
+		cout << "Record found empty. Ignoring." << endl;
+        is.setstate(ios::failbit);
     }
     else {
 	    // Check that the record meets a fairly strict regex
         smatch sm;
+<<<<<<< HEAD
         if ( regex_match( buffer, sm, regex("^(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3});([ !\\w\\d]{0,30});([ -'!\\w\\d]{0,30})\r?\n?$") ) ) {
 
 		// If it matchs the regex, the results must consist of the following values
@@ -303,6 +305,9 @@ istream & operator>> (istream & is, Member & member) {
 		// 	1-7. Bytes in the iButton address
 		// 	8. The first name of the member
 		// 	9. The last name of the member
+=======
+        if ( regex_match( buffer, sm, regex("^(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3});([ !\\w\\d]{0,30});([ -'!\\w\\d]{0,30})\r?") ) ) {
+>>>>>>> final commit
 
             vector<unsigned char> ibuttonAddr;
             
@@ -318,6 +323,7 @@ istream & operator>> (istream & is, Member & member) {
         }
         else {
             cerr << "Corrupt db record found parsing member records: \"" << buffer << "\"" << endl;
+			is.setstate(ios::failbit);
         }
     }
     

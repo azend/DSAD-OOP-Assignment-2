@@ -32,6 +32,17 @@ using namespace std;
 
 //Prototypes
 void clearScreen();
+bool AskYesNoConfirmation (string confirmation, bool defaultYes = true);
+void pause();
+void AddMember (MemberStore & store);
+void DeleteMember (MemberStore & store);
+void EraseDatabase (MemberStore & store);
+void ViewMember (MemberStore & store);
+void LoadDatabase (MemberStore & store);
+void StoreDatabase (MemberStore & store);
+bool ExitSavingChanges (MemberStore & store);
+bool ExitDiscardingChanges (MemberStore & store);
+void CarloSpecial (MemberStore & store);
 
 void pause () {
     string input;
@@ -39,7 +50,7 @@ void pause () {
     getline( cin, input );
 }
 
-bool AskYesNoConfirmation ( string confirmation, bool defaultYes = true ) {
+bool AskYesNoConfirmation (string confirmation, bool defaultYes) {
     bool result = defaultYes;
     bool valid = false;
     string input;
@@ -77,7 +88,7 @@ bool AskYesNoConfirmation ( string confirmation, bool defaultYes = true ) {
                 // Just pressed enter
                 valid = true;
             }
-        }        
+        }
     } while ( !valid );
     
     return result;
@@ -135,26 +146,19 @@ void AddMember (MemberStore & store) {
     
     cout << endl;
     
-    string siButtonAddress;
     vector<unsigned char> ibuttonAddr;
+    unsigned char ibuttonBytes [IBUTTON_BYTES + 1] = {0};
+    
+	for ( int i = 0; i < IBUTTON_BYTES; i++ ) {
+        ibuttonAddr.push_back( 0 );
+    }
     
     cout << "You're almost done! Now all we need to know is the iButton address of the new members' keyfob:";
     cout << "Example: \"00:11:22:33:44:55:66\" or \"1A:2B:3C:4D:5E:6F:7A\"" << endl;
     cout << "iButton Address: ";
     
-    getline( cin, siButtonAddress );
-    
-    unsigned char ibuttonBytes [IBUTTON_BYTES] = {0};
-    
-    while ( sscanf( siButtonAddress.c_str(), "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &ibuttonBytes[0], &ibuttonBytes[1], &ibuttonBytes[2], &ibuttonBytes[3], &ibuttonBytes[4], &ibuttonBytes[5], &ibuttonBytes[6]) != IBUTTON_BYTES ) {
+	while ( fscanf( stdin, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &ibuttonAddr[0], &ibuttonAddr[1], &ibuttonAddr[2], &ibuttonAddr[3], &ibuttonAddr[4], &ibuttonAddr[5], &ibuttonAddr[6] ) != IBUTTON_BYTES ) {
         cout << "The address sequence you've provided is invalid. Please try again." << endl;
-        
-        cout << "iButton Address: ";
-        getline( cin, siButtonAddress );
-    }
-    
-    for ( int i = 0; i < IBUTTON_BYTES; i++ ) {
-        ibuttonAddr.push_back( ibuttonBytes[i] );
     }
     
     newMember.SetiButtonAddr(ibuttonAddr);
@@ -204,9 +208,7 @@ void DeleteMember (MemberStore & store) {
     clearScreen();
 }
 
-void EraseDatabase ( MemberStore & store ) {
-    
-    cout << "WARNING: Are you sure you want to erase the database? (yes/no)" << endl;
+void EraseDatabase (MemberStore & store) {
     
     if (AskYesNoConfirmation("WARNING: Are you sure you want to erase the database?", false)) {
         //delete the set
@@ -224,7 +226,7 @@ void EraseDatabase ( MemberStore & store ) {
     clearScreen();
 }
 
-void ViewMember ( MemberStore & store ) {
+void ViewMember (MemberStore & store) {
     
     string search;
     
@@ -261,7 +263,7 @@ void ViewMember ( MemberStore & store ) {
     clearScreen();
 }
 
-void LoadDatabase ( MemberStore & store ) {
+void LoadDatabase (MemberStore & store) {
     
     string path;
     
@@ -279,7 +281,7 @@ void LoadDatabase ( MemberStore & store ) {
     }
     
     cout << endl;
-    cout << "Attempting to import database from file...";
+    cout << "Attempting to import database from file... ";
     
     
     if (store.LoadDb(path)){
@@ -294,7 +296,7 @@ void LoadDatabase ( MemberStore & store ) {
     clearScreen();
 }
 
-void StoreDatabase ( MemberStore & store ) {
+void StoreDatabase (MemberStore & store) {
     
     string path;
     
@@ -331,11 +333,11 @@ void StoreDatabase ( MemberStore & store ) {
     
     cout << endl;
     
-    pause();   
+    pause();
     clearScreen();
 }
 
-bool ExitSavingChanges ( MemberStore & store ) {
+bool ExitSavingChanges (MemberStore & store) {
     string path;
     bool storeSuccessful = false;
     
@@ -374,7 +376,7 @@ bool ExitSavingChanges ( MemberStore & store ) {
     return storeSuccessful;
 }
 
-bool ExitDiscardingChanges ( MemberStore & store ) {
+bool ExitDiscardingChanges (MemberStore & store) {
     bool result = false;
     
     if ( store.HasChangedSinceLastSave() ) {
@@ -393,7 +395,7 @@ bool ExitDiscardingChanges ( MemberStore & store ) {
     return result;
 }
 
-void CarloSpecial ( MemberStore & store ) {
+void CarloSpecial (MemberStore & store) {
     cout << "The Cheater Wizard" << endl;
     cout << "------------------" << endl;
     cout << "NOTE: This function may not output exactly the number of records it is told to input. The reason for is that the algorithm for generating members can, in large numbers, generate duplicates. Duplicate members will not be added to the store." << endl;
@@ -483,6 +485,8 @@ void GetAllMembers (MemberStore & store) {
 
 int main(int argc, char *argv[]) {
     
+	clearScreen();
+    
     cout << "      ___           ___           ___           ___           ___     \r\n     \/\\  \\         \/\\  \\         \/\\  \\         \/\\__\\         \/\\  \\    \r\n    \/::\\  \\        \\:\\  \\       \/::\\  \\       \/::|  |       \/::\\  \\   \r\n   \/:\/\\:\\  \\        \\:\\  \\     \/:\/\\:\\  \\     \/:|:|  |      \/:\/\\:\\  \\  \r\n  \/::\\~\\:\\  \\        \\:\\  \\   \/::\\~\\:\\  \\   \/:\/|:|  |__   \/:\/  \\:\\__\\ \r\n \/:\/\\:\\ \\:\\__\\ _______\\:\\__\\ \/:\/\\:\\ \\:\\__\\ \/:\/ |:| \/\\__\\ \/:\/__\/ \\:|__|\r\n \\\/__\\:\\\/:\/  \/ \\::::::::\/__\/ \\:\\~\\:\\ \\\/__\/ \\\/__|:|\/:\/  \/ \\:\\  \\ \/:\/  \/\r\n      \\::\/  \/   \\:\\~~\\~~      \\:\\ \\:\\__\\       |:\/:\/  \/   \\:\\  \/:\/  \/ \r\n      \/:\/  \/     \\:\\  \\        \\:\\ \\\/__\/       |::\/  \/     \\:\\\/:\/  \/  \r\n     \/:\/  \/       \\:\\__\\        \\:\\__\\         \/:\/  \/       \\::\/__\/   \r\n     \\\/__\/         \\\/__\/         \\\/__\/         \\\/__\/         ~~    " << endl;
     
     cout << endl;
@@ -499,7 +503,7 @@ int main(int argc, char *argv[]) {
          mrRoboto.Loop();
          */
         
-
+        
         printf("We are a SCRUM agile dev team.  The daemon is scheduled for our next release.\n");
         printf("If you have any questions, please email DSAD-OOP@azend.org\n");
         printf("Thank You for choosing our software! Team Azend!\n");
@@ -517,7 +521,7 @@ int main(int argc, char *argv[]) {
             if ( AskYesNoConfirmation("Do you wish to proceed?") ) {
                 
                 string menuChoice;
-
+				clearScreen();
                 while (!quit){
                     //print the menu interface
                     printf("---------MAIN MENU---------\n\n");
@@ -568,8 +572,8 @@ int main(int argc, char *argv[]) {
                     }
                     else if (menuChoice == "10"){
                         GetAllMembers(store);
-
-                    }                    
+                        
+                    }
                     else {
                         cout << "That was not a valid menu choice." << endl;
                         pause();
@@ -598,4 +602,3 @@ int main(int argc, char *argv[]) {
     
     return 0;
 }
-

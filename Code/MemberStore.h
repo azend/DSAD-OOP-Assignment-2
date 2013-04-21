@@ -37,7 +37,7 @@ public:
      * @brief Takes a member object and adds it to the store.
      * @param newMember The new member to be added to the store.
      */
-    virtual void CreateMember ( const Member & newMember, const bool quiet = false );
+    virtual void CreateMember ( const Member newMember, const bool quiet = false );
     
     /**
      * @brief Searches the set to find a member with the same iButton keycode as the one passed in.

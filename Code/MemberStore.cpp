@@ -15,12 +15,12 @@ MemberStore::~MemberStore() {
 }
 
 
- void MemberStore::CreateMember ( const Member & newMember, const bool quiet ) {
+ void MemberStore::CreateMember ( const Member newMember, const bool quiet ) {
 	#ifdef DEBUG
 	//cout << "Adding a new member to the store... ";
 	#endif
 
-    members.insert( newMember );
+    members.emplace( newMember );
      
      hasChanged = true;
     
@@ -116,7 +116,7 @@ const bool MemberStore::LoadDb ( const string & path, const bool clearDbBeforeLo
     
     if ( db ) {
         db >> *this;
-        result = true;
+		result = db.fail();
     }
     
     return result;
@@ -128,8 +128,7 @@ const bool MemberStore::StoreDb ( const string & path ) {
     ofstream db ( path, ofstream::out );
     
     if ( db ) {
-        db << *this;
-        result = true;
+        result = db << *this;
     }
     
     hasChanged = false;
@@ -142,8 +141,18 @@ istream & operator>> ( istream & is, MemberStore & store ) {
         Member newMember;
         
         is >> newMember;
-        
-        store.CreateMember(newMember, true);
+
+		// Check if it really is in fact good
+
+		if ( is.good() ) {
+			store.CreateMember( newMember, true );
+
+			if ( is.fail() ) {
+				// A record failed to parse.
+				// As long as the stream has not ended or is bad, continue on
+				is.clear();
+			}
+		}
     }
     
     return is;

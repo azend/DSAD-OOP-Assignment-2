@@ -76,7 +76,8 @@ public:
 	 * @brief Destroys a member object
 	 */
 	~Member();
-	
+
+
 	/* Accessors */
 	
 	/**
