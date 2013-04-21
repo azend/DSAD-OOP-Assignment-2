@@ -17,27 +17,43 @@ const bool Member::VerifyiButtonAddr ( const vector<unsigned char> & ibuttonAddr
 
 	return result;
 }
+
 /*******************************************************************/
+
 const bool Member::VerifyFirstName ( const string & firstName ) {
 	bool result = false;
 
-	if ( firstName.size() <= kFirstNameLength && firstName.find(";") == string::npos ) {
+	if ( 
+		firstName.size() <= kFirstNameLength && // Make sure the length is less than 30 chars
+	       	firstName.find(";") == string::npos && // Make sure the string doesn't contain any ;
+	  	firstName.find("\r") == string::npos && // or \r
+	  	firstName.find("\n") == string::npos // or \n
+	) {
 		result = true;
 	}
 	
 	return result;
 }
+
 /*******************************************************************/
+
 const bool Member::VerifyLastName ( const string & lastName ) {
 	bool result = false;
 
-	if ( lastName.size() <= kLastNameLength && lastName.find(";") == string::npos ) {
+	if ( 
+		lastName.size() <= kFirstNameLength && // Make sure the length is less than 30 chars
+	       	lastName.find(";") == string::npos && // Make sure the string doesn't contain any ;
+	  	lastName.find("\r") == string::npos && // or \r
+	  	lastName.find("\n") == string::npos // or \n
+	) {
 		result = true;
 	}
-
+	
 	return result;
 }
+
 /***********************************************************/
+
 Member::Member() {
 
 	for (int i = 0; i < kiButtonLength; i++) {
@@ -48,17 +64,15 @@ Member::Member() {
 	lastName = "";
 
 }
+
 /*********************************************************/
+
 Member::~Member() {
 	// Nothing we need to do here really
 }
-/*********************************************************/
-/*
-Member::operator= () {
 
-}
-*/
 /*********************************************************/
+
 const vector<unsigned char> Member::GetiButtonAddr() const {
 	return ibuttonAddr;
 }
@@ -71,6 +85,7 @@ const string Member::GetiButtonAddrStr() const {
     
     for ( vector<unsigned char>::const_iterator it = ibuttonAddr.cbegin(); it != ibuttonAddr.cend(); it++ ) {
         
+	// Use good ol' C strings to help us write out some hex
         sprintf(buffer, "%02X", *it);
         
         if ( it != --(ibuttonAddr.cend() ) ) {
@@ -141,12 +156,16 @@ const bool Member::Less ( const Member & otherMember ) const {
 		vector<unsigned char>::const_iterator it = ibuttonAddr.begin();
 		vector<unsigned char>::const_iterator otherIt = otherMember.ibuttonAddr.begin();
 		
+		// Check each byte sequentially until one is found which is less
+		// than another
 		while ( it != ibuttonAddr.end() ) {
 			if ( *it < *otherIt ) {
+				// The byte is lesser
 				result = true;
 				break;
 			}
 			else if ( *it > *otherIt ) {
+				// The byte is greater
 				break;
 			}
 			else {
@@ -175,6 +194,7 @@ const bool Member::Equals ( const Member & otherMember ) const {
 		result = true;
 	}
 	else {
+		// If the first name, last name, and iButton addresses line up, they're the same
 		if ( firstName == otherMember.firstName && lastName == otherMember.lastName && ibuttonAddr == otherMember.ibuttonAddr ) {
 			result = true;
 		}
@@ -274,10 +294,16 @@ istream & operator>> (istream & is, Member & member) {
         cerr << "Record empty. Ignoring." << endl;
     }
     else {
+	    // Check that the record meets a fairly strict regex
         smatch sm;
-        if ( regex_match( buffer, sm, regex("^(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3});([ !\\w\\d]{0,30});([ -'!\\w\\d]{0,30})\r?$") ) ) {
+        if ( regex_match( buffer, sm, regex("^(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3}):(\\d{1,3});([ !\\w\\d]{0,30});([ -'!\\w\\d]{0,30})\r?\n?$") ) ) {
 
-//        if ( regex_match( buffer, sm, regex("^") ) ) {
+		// If it matchs the regex, the results must consist of the following values
+		// 	1. The full string
+		// 	1-7. Bytes in the iButton address
+		// 	8. The first name of the member
+		// 	9. The last name of the member
+
             vector<unsigned char> ibuttonAddr;
             
             
