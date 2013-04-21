@@ -224,6 +224,7 @@ public:
 	 * @param member A member object to read the values into.
 	 * @return Returns the input stream is for chaining
 	 * @see operator<<
+	 */
 	friend istream & operator>> (istream & is, Member & member);
 };
 
